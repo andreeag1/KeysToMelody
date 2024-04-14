@@ -1,0 +1,34 @@
+.main-navbar-container {
+  position: fixed;
+  width: 100%;
+  height: 40px;
+  top: 0;
+  left: 0;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.main-navbar-title {
+  padding-left: 20px;
+  font-size: 30px;
+}
+.navbar-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 70px;
+  padding-right: 5%;
+}
+.home-button,
+.sign-in-button {
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+.sign-up-button {
+  background-color: #7eaecd;
+  color: white;
+  cursor: pointer;
+}

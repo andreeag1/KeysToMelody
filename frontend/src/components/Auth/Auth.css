@@ -1,0 +1,67 @@
+.auth-transition-container {
+  opacity: 1;
+  background-color: #0009;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.auth-container {
+  position: fixed;
+  align-self: center;
+  width: 35%;
+  min-width: 300px;
+  overflow: scroll;
+  height: auto;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: all 0.3s ease-in-out;
+  padding: 20px;
+}
+
+.auth-input-container {
+  width: 80%;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-input {
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid black;
+  height: 40px;
+}
+.auth-button {
+  width: 80%;
+  background-color: #7eaecd;
+  color: white;
+}
+.other-sign-in-option-container {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.line {
+  border-top: 1px solid black;
+  height: 1px;
+  width: 30%;
+}
+.google-icon {
+  width: 10%;
+}
+.google-sign-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
