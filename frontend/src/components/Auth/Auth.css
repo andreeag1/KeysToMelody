@@ -44,6 +44,11 @@
   background-color: #7eaecd;
   color: white;
 }
+.error-message {
+  width: 80%;
+  height: 20px;
+  color: red;
+}
 .other-sign-in-option-container {
   width: 80%;
   display: flex;

@@ -6,11 +6,13 @@ from user.router import user_blueprint
 from dotenv import load_dotenv
 from models import db
 from models.user import User
+from flask_cors import CORS
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URI"]
 

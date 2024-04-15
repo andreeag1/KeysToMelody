@@ -3,3 +3,4 @@
 **/env
 **/build
 **/venv
+**/client_secret.json
