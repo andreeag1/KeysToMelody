@@ -1,4 +1,10 @@
-import React, { FormEvent, LegacyRef, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  LegacyRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./Auth.css";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import Google from "../../assets/google.png";
@@ -71,14 +77,36 @@ const Auth = (props: props) => {
 
   const handleGoogleLogin = async () => {
     try {
-      const resp = await fetch(`${BACKEND_URL}/user/google`, {
-        headers: { "Content-type": "application/json" },
-      });
-      if (!resp.ok) {
-        throw new Error(JSON.stringify(resp));
+      let headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Accept", "application/json");
+      headers.append("Access-Control-Allow-Origin", "http://127.0.0.1:5000");
+      headers.append("Access-Control-Allow-Credentials", "true");
+      if (signInTrue) {
+        const resp = await fetch(`${BACKEND_URL}/user/google-login`, {
+          method: "GET",
+          headers: headers,
+        });
+        if (!resp.ok) {
+          console.log("hello", resp);
+          throw new Error(JSON.stringify(resp));
+        }
+        const parsedResp = await resp.json();
+        console.log(parsedResp);
+        window.location.assign(parsedResp.auth_url);
+      } else {
+        const resp = await fetch(`${BACKEND_URL}/user/google`, {
+          method: "GET",
+          headers: headers,
+        });
+        if (!resp.ok) {
+          console.log("hello", resp);
+          throw new Error(JSON.stringify(resp));
+        }
+        const parsedResp = await resp.json();
+        console.log(parsedResp);
+        window.location.assign(parsedResp.auth_url);
       }
-      const parsedResp = await resp.json();
-      console.log(parsedResp);
     } catch (err) {
       console.log(err);
     }

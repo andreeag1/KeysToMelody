@@ -1,21 +1,39 @@
+import json
 from flask import jsonify, make_response, redirect, request, session
+import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.user import User
 from models import db
 from functools import wraps
 from google_auth_oauthlib.flow import Flow
+from flask.wrappers import Response
+from google.oauth2 import id_token
 import uuid
 import jwt
 import datetime
 import os
 import pathlib
 
-client_secrets_file = "client_secret.json"
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 flow = Flow.from_client_secrets_file(
-  client_secrets_file=client_secrets_file, 
-  scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-  redirect_uri="http://127.0.0.1:5000/callback"
-  )
+    client_secrets_file=client_secrets_file,
+    scopes=[
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "openid",
+    ],
+    redirect_uri="http://127.0.0.1:5000/user/callback",
+)
+flow_login = Flow.from_client_secrets_file(
+    client_secrets_file=client_secrets_file,
+    scopes=[
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+        "openid",
+    ],
+    redirect_uri="http://127.0.0.1:5000/user/callback-login",
+)
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
 
 def token_required(f):
   @wraps(f)
@@ -75,5 +93,22 @@ def getuser_service(public_id):
 
   return jsonify({'user': user_data})
 
+def googlesignup_service():
+  authorization_url, state = flow.authorization_url()
+  # Store the state so the callback can verify the auth server response.
+  session["state"] = state
+  return Response(
+      response=json.dumps({'auth_url':authorization_url}),
+      status=200,
+      mimetype='application/json'
+  )
+
 def googlelogin_service():
-  return "hello"
+  authorization_url, state = flow_login.authorization_url()
+  # Store the state so the callback can verify the auth server response.
+  session["state"] = state
+  return Response(
+      response=json.dumps({'auth_url':authorization_url}),
+      status=200,
+      mimetype='application/json'
+  )
