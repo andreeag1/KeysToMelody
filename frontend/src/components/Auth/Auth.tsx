@@ -82,31 +82,17 @@ const Auth = (props: props) => {
       headers.append("Accept", "application/json");
       headers.append("Access-Control-Allow-Origin", "http://127.0.0.1:5000");
       headers.append("Access-Control-Allow-Credentials", "true");
-      if (signInTrue) {
-        const resp = await fetch(`${BACKEND_URL}/user/google-login`, {
-          method: "GET",
-          headers: headers,
-        });
-        if (!resp.ok) {
-          console.log("hello", resp);
-          throw new Error(JSON.stringify(resp));
-        }
-        const parsedResp = await resp.json();
-        console.log(parsedResp);
-        window.location.assign(parsedResp.auth_url);
-      } else {
-        const resp = await fetch(`${BACKEND_URL}/user/google`, {
-          method: "GET",
-          headers: headers,
-        });
-        if (!resp.ok) {
-          console.log("hello", resp);
-          throw new Error(JSON.stringify(resp));
-        }
-        const parsedResp = await resp.json();
-        console.log(parsedResp);
-        window.location.assign(parsedResp.auth_url);
+      const resp = await fetch(`${BACKEND_URL}/user/google`, {
+        method: "GET",
+        headers: headers,
+      });
+      if (!resp.ok) {
+        console.log("hello", resp);
+        throw new Error(JSON.stringify(resp));
       }
+      const parsedResp = await resp.json();
+      console.log(parsedResp);
+      window.location.assign(parsedResp.auth_url);
     } catch (err) {
       console.log(err);
     }
@@ -115,7 +101,7 @@ const Auth = (props: props) => {
   useOutsideClick(modalRef, () => setOpenModal(false));
   return (
     <form
-      className="auth-transition-container nunito-sans"
+      className="auth-transition-container nunito-sans hidden-body-scrollbar"
       onSubmit={(e) => handleAuthSubmit(e)}
     >
       <div className="auth-container" ref={modalRef}>

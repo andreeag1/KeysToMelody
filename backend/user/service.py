@@ -24,15 +24,6 @@ flow = Flow.from_client_secrets_file(
     ],
     redirect_uri="http://127.0.0.1:5000/user/callback",
 )
-flow_login = Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
-    scopes=[
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email",
-        "openid",
-    ],
-    redirect_uri="http://127.0.0.1:5000/user/callback-login",
-)
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
 
 def token_required(f):
@@ -93,18 +84,8 @@ def getuser_service(public_id):
 
   return jsonify({'user': user_data})
 
-def googlesignup_service():
+def google_service():
   authorization_url, state = flow.authorization_url()
-  # Store the state so the callback can verify the auth server response.
-  session["state"] = state
-  return Response(
-      response=json.dumps({'auth_url':authorization_url}),
-      status=200,
-      mimetype='application/json'
-  )
-
-def googlelogin_service():
-  authorization_url, state = flow_login.authorization_url()
   # Store the state so the callback can verify the auth server response.
   session["state"] = state
   return Response(

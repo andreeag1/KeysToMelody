@@ -1,12 +1,9 @@
-import React, { useState } from "react";
 import "./App.css";
-import Navbar from "./components/Navbar/Navbar";
 import SheetMusic from "./assets/sheet-music.png";
 
 function App() {
   return (
     <div className="main-app-container judson-regular">
-      <Navbar />
       <div className="hero-container">
         <div className="hero-title-container">
           <div className="hero-title">

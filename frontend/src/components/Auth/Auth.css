@@ -1,4 +1,5 @@
 .auth-transition-container {
+  position: relative;
   opacity: 1;
   background-color: #0009;
   width: 100vw;
@@ -11,10 +12,9 @@
 .auth-container {
   position: fixed;
   align-self: center;
-  width: 35%;
-  min-width: 300px;
-  overflow: scroll;
-  height: auto;
+  width: 30%;
+  min-width: 200px;
+  height: 350px;
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
