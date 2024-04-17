@@ -1,0 +1,23 @@
+.dashboard-container {
+  width: 100vw;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: row;
+  padding-top: 40px;
+}
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.scores-container {
+  width: 100%;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.scores-container-title {
+  font-weight: 600;
+  font-size: 25px;
+}

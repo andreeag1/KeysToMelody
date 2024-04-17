@@ -98,3 +98,9 @@ button:focus-visible {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+.lato-regular {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
