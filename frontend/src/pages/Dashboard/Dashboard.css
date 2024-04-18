@@ -1,23 +1,103 @@
 .dashboard-container {
   width: 100vw;
-  background-color: aliceblue;
+  background-color: rgb(251, 253, 255);
   display: flex;
   flex-direction: row;
-  padding-top: 40px;
+  padding-top: 45px;
+  gap: 40px;
 }
 .dashboard {
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
+  gap: 20px;
 }
 .scores-container {
-  width: 100%;
-  padding-left: 10px;
+  width: 90%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 30px;
+  height: 50px;
+  align-items: center;
+  border-bottom: 2px solid rgb(165, 179, 205);
 }
 .scores-container-title {
   font-weight: 600;
   font-size: 25px;
+}
+.add-score-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--accent-color);
+  border-radius: 20px;
+  width: 120px;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 700;
+  color: white;
+  height: 80%;
+  cursor: pointer;
+}
+.add-score-container:hover {
+  opacity: 0.8;
+  transition: 1s ease-out;
+}
+.add-score-icon {
+  width: 20px;
+  height: 20px;
+}
+.scores-list-container {
+  align-self: start;
+  width: 90%;
+  display: grid;
+  grid: 1fr 1fr 1fr;
+  padding-left: 40px;
+}
+.new-score-container {
+  width: 20%;
+  height: 25vh;
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed rgb(118, 118, 118);
+  cursor: pointer;
+}
+.new-score-icon {
+  width: 70px;
+  height: 70px;
+  color: rgb(118, 118, 118);
+  transition: 0.1s ease-out;
+}
+.new-score-containerr:hover {
+  border: 4px dashed rgb(67, 67, 67);
+}
+.new-score-icon:hover {
+  color: rgb(67, 67, 67);
+  width: 75px;
+  height: 75px;
+  transition: 0.3s ease-out;
+}
+.add-score-collection-container {
+  display: flex;
+  flex-direction: row;
+}
+.add-collection-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 160px;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 700;
+  color: black;
+  height: 80%;
+  cursor: pointer;
+}
+.add-collection-container:hover {
+  opacity: 0.8;
+  transition: 1s ease-out;
 }

@@ -10,7 +10,7 @@ const Navbar = () => {
     <>
       <div className="main-navbar-container">
         <div className="main-navbar-title judson-bold">KeysToMelody</div>
-        <div className="navbar-buttons">
+        <div className="navbar-buttons lato-regular">
           <div className="home-button">Home</div>
           <div
             className="sign-in-button"
