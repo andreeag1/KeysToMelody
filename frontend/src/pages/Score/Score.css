@@ -40,6 +40,9 @@
   height: 70%;
   padding-left: 15px;
 }
+.subsection-note {
+  cursor: pointer;
+}
 .sharp-icon {
   width: 20px;
   height: 20px;
