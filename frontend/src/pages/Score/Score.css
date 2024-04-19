@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100vw;
   padding-top: 45px;
+  background-color: #fafafb;
 }
 .score-page-header {
   width: 100%;
@@ -20,6 +21,9 @@
 .border-bottom {
   border-bottom: 3px solid rgb(76, 100, 153);
 }
+.header-section {
+  cursor: pointer;
+}
 .header-subsection {
   width: 100%;
   height: 40px;
@@ -29,6 +33,7 @@
   padding-top: 5px;
   padding-left: 10px;
   align-items: center;
+  background-color: white;
 }
 .header-sign-subsection {
   display: flex;
@@ -86,4 +91,31 @@
 .sixtyfourth-icon {
   width: 13px;
   height: 21px;
+}
+.page-container {
+  margin-top: 20px;
+  width: 70%;
+  max-width: 1000px;
+  height: 1400px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2pt 2pt 10pt #909090;
+  background-color: white;
+  margin-bottom: 20px;
+}
+.score-title-container {
+  margin-top: 60px;
+  font-size: 5vw;
+  font-weight: 300;
+}
+.bars-container {
+  width: 90%;
+}
+.blue-icon {
+  background-color: #7eadcd38;
+  border-radius: 10px;
+  width: 35px;
+  height: 35px;
 }

@@ -14,27 +14,21 @@ const Dashboard = () => {
           <div className="scores-container-title">My Scores</div>
           <div className="add-score-collection-container">
             <div className="add-collection-container">
-              <MdCreateNewFolder
-                className="add-score-icon"
-                onClick={() => navigate("/new")}
-              />
+              <MdCreateNewFolder className="add-score-icon" />
               <div className="new-score">New Collection</div>
             </div>
-            <div className="add-score-container">
-              <IoMdAddCircleOutline
-                className="add-score-icon"
-                onClick={() => navigate("/new")}
-              />
+            <div
+              className="add-score-container"
+              onClick={() => navigate("/new")}
+            >
+              <IoMdAddCircleOutline className="add-score-icon" />
               <div className="new-score">New Score</div>
             </div>
           </div>
         </div>
         <div className="scores-list-container">
-          <div className="new-score-container">
-            <IoMdAddCircleOutline
-              onClick={() => navigate("/new")}
-              className="new-score-icon"
-            />
+          <div className="new-score-container" onClick={() => navigate("/new")}>
+            <IoMdAddCircleOutline className="new-score-icon" />
           </div>
         </div>
       </div>

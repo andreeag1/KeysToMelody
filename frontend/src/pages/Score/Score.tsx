@@ -11,10 +11,21 @@ import SixteenthNote from "../../assets/sixteenth.png";
 import ThirtySecondNote from "../../assets/thirtysecond.png";
 import SixtyFourthNote from "../../assets/sixtyfourth.png";
 import DottedNote from "../../assets/dotted.png";
+import Staccato from "../../assets/staccato.png";
+import Modal from "../../components/Modal/Modal";
+import Bars from "../../assets/bars.png";
 
 const Score = () => {
   const [clicked, setClicked] = useState<string>("note");
+  const [titleModal, setTitleModal] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>("");
+  const [noteClicked, setNoteClicked] = useState<string>("");
   const tabs = ["note", "articulation", "ornament", "dynamic", "bar", "text"];
+
+  const handleTitle = (input: string) => {
+    setTitle(input);
+    setTitleModal(false);
+  };
 
   return (
     <div className="score-page-container lato-regular">
@@ -34,8 +45,18 @@ const Score = () => {
       {clicked === "note" && (
         <div className="header-subsection">
           <div className="header-sign-subsection">
-            <div className="subsection-note">
-              <img src={Natural} className="icon" title="natural" />
+            <div
+              className={
+                "subsection-note " +
+                (noteClicked === "natural" ? "blue-icon" : "")
+              }
+              onClick={() =>
+                noteClicked === "natural"
+                  ? setNoteClicked("")
+                  : setNoteClicked("natural")
+              }
+            >
+              <img src={Natural} className={"icon"} title="natural" />
             </div>
             <div className="subsection-note">
               <img src={Sharp} className="sharp-icon" title="sharp" />
@@ -92,6 +113,24 @@ const Score = () => {
           </div>
         </div>
       )}
+      {clicked === "articulation" && (
+        <div className="header-subsection">
+          <div className="header-sign-subsection">
+            <div className="subsection-note">
+              <img
+                src={Staccato}
+                className="sixtyfourth-icon"
+                title="staccato"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      {titleModal && <Modal handleTitle={handleTitle} />}
+      <div className="page-container judson-bold">
+        <div className="score-title-container">{title}</div>
+        <img src={Bars} className="bars-container" />
+      </div>
     </div>
   );
 };

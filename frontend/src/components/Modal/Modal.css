@@ -1,0 +1,36 @@
+.modal-main-container {
+  width: 40%;
+  height: 200px;
+  z-index: 10000;
+  background-color: rgb(230, 230, 230);
+  box-shadow: 3pt 3pt 5pt #909090;
+  position: fixed;
+  align-self: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10em;
+  gap: 20px;
+}
+.modal-text {
+  font-weight: 600;
+  font-size: 23px;
+  padding-left: 10px;
+  padding-top: 30px;
+}
+.modal-input {
+  background-color: transparent;
+  border: 1px solid black;
+  width: 60%;
+  height: 30px;
+}
+.ok-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  width: 80px;
+  height: 40px;
+  background-color: var(--accent-color);
+  cursor: pointer;
+}
