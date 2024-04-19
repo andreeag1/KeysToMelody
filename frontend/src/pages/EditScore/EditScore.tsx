@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Score.css";
+import "./EditScore.css";
 import Natural from "../../assets/natural.png";
 import Sharp from "../../assets/sharp.png";
 import Flat from "../../assets/flat.png";
@@ -14,8 +14,9 @@ import DottedNote from "../../assets/dotted.png";
 import Staccato from "../../assets/staccato.png";
 import Modal from "../../components/Modal/Modal";
 import Bars from "../../assets/bars.png";
+import Score from "../../components/Score/Score";
 
-const Score = () => {
+const EditScore = () => {
   const [clicked, setClicked] = useState<string>("note");
   const [titleModal, setTitleModal] = useState<boolean>(true);
   const [title, setTitle] = useState<string>("");
@@ -129,10 +130,10 @@ const Score = () => {
       {titleModal && <Modal handleTitle={handleTitle} />}
       <div className="page-container judson-bold">
         <div className="score-title-container">{title}</div>
-        <img src={Bars} className="bars-container" />
+        <Score />
       </div>
     </div>
   );
 };
 
-export default Score;
+export default EditScore;
