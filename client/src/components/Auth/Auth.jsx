@@ -8,26 +8,20 @@ import React, {
 import "./Auth.css";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 import Google from "../../assets/google.png";
-import { encode as base64_encode } from "base-64";
 import { BACKEND_URL } from "../../config";
 import { useNavigate } from "react-router-dom";
 
-interface props {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  signInTrue: boolean;
-}
-
-const Auth = (props: props) => {
+const Auth = (props) => {
   const { setOpenModal, signInTrue } = props;
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [email, setEmail] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [google, setGoogle] = useState<boolean>(false);
+  const modalRef = useRef(null);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [google, setGoogle] = useState(false);
   const navigate = useNavigate();
 
-  const handleAuthSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleAuthSubmit = async (e) => {
     e.preventDefault();
     try {
       if (signInTrue) {

@@ -113,9 +113,38 @@
 .bars-container {
   width: 90%;
 }
+.subsection-note {
+  opacity: 0.8;
+}
 .blue-icon {
-  background-color: #7eadcd38;
-  border-radius: 10px;
-  width: 35px;
-  height: 35px;
+  opacity: 1;
+}
+.score-edit-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding-left: 40px;
+  gap: 40px;
+  align-self: start;
+}
+.add-stave-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--accent-color);
+  width: 105px;
+  height: 30px;
+  justify-content: center;
+  border-radius: 4px;
+  color: white;
+  opacity: 0.8;
+}
+.add-stave-container:hover {
+  opacity: 1;
+}
+.blue-icon {
+  background-color: #7eadcd4d;
+  border-radius: 4px;
+  align-items: center;
 }

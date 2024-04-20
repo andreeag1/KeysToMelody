@@ -2,12 +2,8 @@ import { useRef, useState } from "react";
 import "./Modal.css";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
-interface props {
-  handleTitle: (input: string) => void;
-}
-
-const Modal = (props: props) => {
-  const [tempTitle, setTempTitle] = useState<string>("");
+const Modal = (props) => {
+  const [tempTitle, setTempTitle] = useState("");
 
   return (
     <div className="modal-main-container lato-regular">

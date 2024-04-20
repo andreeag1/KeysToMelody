@@ -3,8 +3,8 @@ import "./Navbar.css";
 import Auth from "../Auth/Auth";
 
 const Navbar = () => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [signInTrue, setSignInTrue] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [signInTrue, setSignInTrue] = useState(false);
 
   return (
     <>

@@ -7,7 +7,7 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import { RxCounterClockwiseClock } from "react-icons/rx";
 
 const Sidebar = () => {
-  const [clicked, setClicked] = useState<string>("scores");
+  const [clicked, setClicked] = useState("scores");
 
   return (
     <div className="sidebar-container lato-regular">
