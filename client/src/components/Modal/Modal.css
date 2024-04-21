@@ -1,12 +1,13 @@
 .modal-main-container {
-  width: 40%;
-  height: 200px;
+  width: fit-content;
+  height: auto;
   z-index: 10000;
   background-color: rgb(230, 230, 230);
   box-shadow: 3pt 3pt 5pt #909090;
   position: fixed;
   align-self: center;
-  align-items: center;
+  align-items: start;
+  padding: 10px 30px 30px 30px;
   display: flex;
   flex-direction: column;
   margin-top: 10em;
@@ -33,4 +34,50 @@
   height: 40px;
   background-color: var(--accent-color);
   cursor: pointer;
+}
+select {
+  appearance: none;
+  outline: 10px red;
+  border: 0;
+  box-shadow: none;
+  /* Personalize */
+  flex: 1;
+  font-size: 15px;
+  padding: 0 1em;
+  color: var(--accent-color);
+  background-color: var(--darkgray);
+  background-image: none;
+  cursor: pointer;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Custom Select wrapper */
+.modal-select-container {
+  position: relative;
+  display: flex;
+  width: 6em;
+  height: 3em;
+  border-radius: 0.25em;
+  overflow: hidden;
+  background-color: #34495e;
+}
+/* Arrow */
+.modal-select-container::after {
+  content: "\25BC";
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1em;
+  background-color: #34495e;
+  transition: 0.25s all ease;
+  pointer-events: none;
+}
+/* Transition */
+.modal-select-container:hover::after {
+  color: #ffffff;
+}
+.modal-buttons {
+  align-self: end;
 }

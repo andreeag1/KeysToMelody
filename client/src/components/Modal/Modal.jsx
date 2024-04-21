@@ -3,6 +3,7 @@ import "./Modal.css";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const Modal = (props) => {
+  const { setTimeSig } = props;
   const [tempTitle, setTempTitle] = useState("");
 
   return (
@@ -13,6 +14,18 @@ const Modal = (props) => {
         value={tempTitle}
         onChange={(e) => setTempTitle(e.target.value)}
       />
+      <div className="modal-text">Choose a time signature:</div>
+      <div className="modal-select-container">
+        <select
+          className="modal-select"
+          onChange={(e) => setTimeSig(e.target.value)}
+        >
+          <option value="4/4">4/4</option>
+          <option value="3/4">3/4</option>
+          <option value="2/4">2/4</option>
+        </select>
+      </div>
+
       <div
         className="modal-buttons"
         onClick={() => props.handleTitle(tempTitle)}

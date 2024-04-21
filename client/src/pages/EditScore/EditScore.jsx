@@ -23,10 +23,10 @@ const EditScore = () => {
   const [noteClicked, setNoteClicked] = useState("");
   const [newStave, setNewStave] = useState(false);
   const tabs = ["note", "articulation", "ornament", "dynamic", "bar", "text"];
-  const [staves, setStaves] = useState([]);
-  const [staveLength, setStaveLength] = useState(2);
+  const [staveLength, setStaveLength] = useState(1);
   const [width, setWidth] = useState(810);
   const [height, setHeight] = useState(150);
+  const [timeSig, setTimeSig] = useState("");
   const pageContainer = useRef(null);
 
   const handleTitle = (input) => {
@@ -237,7 +237,9 @@ const EditScore = () => {
           </div>
         </div>
       )}
-      {titleModal && <Modal handleTitle={handleTitle} />}
+      {titleModal && (
+        <Modal handleTitle={handleTitle} setTimeSig={setTimeSig} />
+      )}
       <div className="page-container judson-bold" ref={pageContainer}>
         <div className="score-title-container">{title}</div>
         <div className="score-edit-container">
@@ -245,11 +247,7 @@ const EditScore = () => {
             newStave={newStave}
             setNewStave={setNewStave}
             staveLength={staveLength}
-            staves={[
-              ["c3", "a4", "e4", "d4"],
-              ["a4", "d4", "e4", "d4"],
-              // ["a4", "a4", "b4", "a4"],
-            ]}
+            timeSig={timeSig}
             width={width}
             height={height}
           />
