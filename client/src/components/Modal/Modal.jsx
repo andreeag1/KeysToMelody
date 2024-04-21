@@ -3,7 +3,7 @@ import "./Modal.css";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
 
 const Modal = (props) => {
-  const { setTimeSig } = props;
+  const { setTimeSig, handleTitle } = props;
   const [tempTitle, setTempTitle] = useState("");
 
   return (
@@ -26,10 +26,7 @@ const Modal = (props) => {
         </select>
       </div>
 
-      <div
-        className="modal-buttons"
-        onClick={() => props.handleTitle(tempTitle)}
-      >
+      <div className="modal-buttons" onClick={() => handleTitle(tempTitle)}>
         <div className="ok-button">Confirm</div>
       </div>
     </div>

@@ -16,6 +16,7 @@ export default function Score({
   clef = "treble",
   width,
   height,
+  confirmed,
 }) {
   const container = useRef();
   const rendererRef = useRef();
@@ -27,7 +28,7 @@ export default function Score({
   const [rerenderStave, setRerenderStave] = useState(false);
 
   useEffect(() => {
-    if (timeSig) {
+    if (confirmed) {
       if (rendererRef.current == null || rerenderStave) {
         const myNode = document.getElementById("output");
         myNode.innerHTML = "";
@@ -73,6 +74,7 @@ export default function Score({
         setRerenderStave(false);
       }
 
+      console.log(newStaves);
       newStaves.forEach((notes, i) => {
         console.log("hello");
         const processedNotes = notes
@@ -129,7 +131,7 @@ export default function Score({
       }
       setNewStave(false);
     }
-  }, [newStaves, staves, newStave, timeSig, rerenderStave]);
+  }, [newStaves, staves, newStave, rerenderStave, confirmed]);
 
   useEffect(() => {
     if (container.current && staveMap[0]) {
@@ -147,21 +149,6 @@ export default function Score({
     const boundingRect = container && container.current.getBoundingClientRect();
     const mouseX = event.clientX - boundingRect.left;
     const mouseY = event.clientY - boundingRect.top;
-
-    let hoveredStaveIndex = -1;
-    // Loop through staveMap to find the stave that the mouse is hovering over
-    for (let i = 0; i < staveMap.length; i++) {
-      const { currX, currY, width } = staveMap[i];
-      if (
-        mouseX >= currX &&
-        mouseX <= currX + width &&
-        mouseY >= currY &&
-        mouseY <= currY + staveMap[i].stave.getHeight()
-      ) {
-        hoveredStaveIndex = i;
-        break;
-      }
-    }
 
     // Calculate the vertical position of the mouse relative to the stave
     const staffLineHeight = staveMap[0].stave.getSpacingBetweenLines();
@@ -195,28 +182,28 @@ export default function Score({
       lineIndex = undefined;
     }
 
-    // Determine the position of each beat in the bar
-    const timeSigArray = timeSig.split("/");
-    const beatsInBar = timeSigArray[0]; // Assuming 4 beats per bar
-    const beatWidth = staveMap[0].stave.getWidth() / beatsInBar; // Assuming equal spacing between beats
-    const beatPositions = Array.from(
-      { length: beatsInBar },
-      (_, i) => i * beatWidth
-    );
+    let beatIndex = 0;
+    let hoveredStaveIndex = -1;
+    // Loop through staveMap to find the stave that the mouse is hovering over
+    for (let i = 0; i < staveMap.length; i++) {
+      const { currX, currY, width, stave } = staveMap[i];
+      if (
+        mouseX >= currX &&
+        mouseX <= currX + width &&
+        mouseY >= currY &&
+        mouseY <= currY + stave.getHeight()
+      ) {
+        hoveredStaveIndex = i;
 
-    let beatIndex = -1;
-    if (lineHovered || spaceHovered) {
-      const mouseX = event.clientX - boundingRect.left;
-      for (let i = 0; i < beatPositions.length; i++) {
-        const beatPosition = beatPositions[i];
-        const nextBeatPosition =
-          beatPositions[i + 1] || staveMap[0].stave.getWidth(); // For the last beat in the bar
-        if (mouseX >= beatPosition && mouseX < nextBeatPosition) {
-          beatIndex = i;
-          break;
-        }
+        // Calculate beat index within the hovered stave
+        const beatsInBar = timeSig.split("/")[0]; // Assuming 4 beats per bar
+        const beatWidth = stave.getWidth() / beatsInBar;
+        const relativeMouseX = mouseX - currX; // Adjust mouseX relative to stave position
+        beatIndex = Math.floor(relativeMouseX / beatWidth);
+        break;
       }
     }
+    console.log("lineIndex", lineIndex);
 
     if (event.type == "mousedown") {
       handleSetNewNote(lineIndex, spaceIndex, beatIndex, hoveredStaveIndex);
@@ -247,11 +234,11 @@ export default function Score({
       } else if (!newStaveArray[i]) {
         newStaveArray[i] = ["b/4", "qr"];
       }
-      console.log(newStaveArray);
     }
 
     setRerenderStave(true);
     if (newListArray.length == 0) {
+      console.log("hello");
       newListArray = [newStaveArray];
     } else {
       i = 0;

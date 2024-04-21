@@ -26,12 +26,14 @@ const EditScore = () => {
   const [staveLength, setStaveLength] = useState(1);
   const [width, setWidth] = useState(810);
   const [height, setHeight] = useState(150);
-  const [timeSig, setTimeSig] = useState("");
+  const [timeSig, setTimeSig] = useState("4/4");
+  const [confirmed, setConfirmed] = useState(false);
   const pageContainer = useRef(null);
 
   const handleTitle = (input) => {
     setTitle(input);
     setTitleModal(false);
+    setConfirmed(true);
   };
 
   const handleAddNewStave = () => {
@@ -250,6 +252,7 @@ const EditScore = () => {
             timeSig={timeSig}
             width={width}
             height={height}
+            confirmed={confirmed}
           />
           <div
             className="add-stave-container lato-regular"
