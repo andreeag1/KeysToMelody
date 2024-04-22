@@ -203,7 +203,7 @@ export default function Score({
         break;
       }
     }
-    console.log("lineIndex", lineIndex);
+    console.log("spaceIndex", spaceIndex);
 
     if (event.type == "mousedown") {
       handleSetNewNote(lineIndex, spaceIndex, beatIndex, hoveredStaveIndex);
