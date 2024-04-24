@@ -17,6 +17,8 @@ const checkHoverNote = (lineIndex, spaceIndex) => {
       return "a/5";
     } else if (newLineIndex == -2) {
       return "c/6";
+    } else {
+      return "c/6";
     }
   } else {
     if (0 <= newSpaceIndex && newSpaceIndex <= 3) {
@@ -33,6 +35,8 @@ const checkHoverNote = (lineIndex, spaceIndex) => {
       return "b/3";
     } else if (24 <= newSpaceIndex && newSpaceIndex <= 27) {
       return "g/3";
+    } else {
+      return "c/6";
     }
   }
 };

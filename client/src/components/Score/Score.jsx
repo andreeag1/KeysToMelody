@@ -1,9 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import VexFlow from "vexflow";
 import checkHoverNote from "../../utils/checkHoverNote";
+import "./Score.css";
+import Note from "../../assets/cursorNote.png";
 
 const VF = VexFlow.Flow;
-const { Formatter, Renderer, Stave, StaveNote, Voice } = VF;
+const { Formatter, Renderer, Stave, StaveNote, Voice, StaveConnector } = VF;
 
 const clefWidth = 30;
 const timeWidth = 30;
@@ -13,19 +15,35 @@ export default function Score({
   setNewStave,
   staveLength,
   timeSig,
-  clef = "treble",
   width,
   height,
+  setHeight,
   confirmed,
 }) {
   const container = useRef();
   const rendererRef = useRef();
-  const [currX, setCurrX] = useState(270);
+  const [currX, setCurrX] = useState(280);
   const [currY, setCurrY] = useState(0);
   const [staves, setStaves] = useState([]);
   const [staveMap, setStaveMap] = useState([]);
   const [newStaves, setNewStaves] = useState([]);
   const [rerenderStave, setRerenderStave] = useState(false);
+  const [noteOffset, setNoteOffset] = useState({ x: 0, y: 0 });
+  const [showNote, setShowNote] = useState(false);
+
+  const handleCursor = (event) => {
+    const rect = container.current.getBoundingClientRect();
+    const offsetX = 10; // Adjust this offset as needed
+    const offsetY = -20; // Adjust this offset as needed
+    const x = event.clientX - rect.left + offsetX;
+    const y = event.clientY - rect.top + offsetY;
+    setNoteOffset({ x, y });
+    setShowNote(true);
+  };
+
+  const handleMouseClick = () => {
+    setShowNote(false);
+  };
 
   useEffect(() => {
     if (confirmed) {
@@ -41,46 +59,84 @@ export default function Score({
       renderer.resize(width, height);
       const context = renderer.getContext();
       context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
-      const clefAndTimeWidth =
-        (clef ? clefWidth : 0) + (timeSig ? timeWidth : 0);
-      const staveWidth = 210;
+      const clefAndTimeWidth = clefWidth + timeWidth;
+      const staveWidth = 200;
       let currentX = 0;
 
-      if (staves.length == 0 || rerenderStave) {
-        const stave = new Stave(0, 0, staveWidth);
-        stave.setWidth(staveWidth + clefAndTimeWidth);
-        clef && stave.addClef(clef);
-        timeSig && stave.addTimeSignature(timeSig);
-        currentX += stave.getWidth();
-        stave.setContext(context).draw();
+      if ((staves.length == 0 && staveMap.length == 0) || rerenderStave) {
+        const topStave = new Stave(20, 0, staveWidth);
+        const bottomStave = new Stave(20, 150, staveWidth);
+        topStave.setWidth(staveWidth + clefAndTimeWidth);
+        bottomStave.setWidth(staveWidth + clefAndTimeWidth);
+        topStave.addClef("treble");
+        bottomStave.addClef("bass");
+        topStave.addTimeSignature(timeSig);
+        bottomStave.addTimeSignature(timeSig);
+        currentX += topStave.getWidth();
+
+        const brace = new StaveConnector(topStave, bottomStave).setType(3);
+        const lineLeft = new StaveConnector(topStave, bottomStave).setType(1);
+        // const lineRight = new StaveConnector(topStave, bottomStave).setType(6);
+
+        topStave.setContext(context).draw();
+        bottomStave.setContext(context).draw();
+
+        // lineRight.setContext(context).draw();
+        lineLeft.setContext(context).draw();
+        brace.setContext(context).draw();
+
         setStaves(newStaves);
-        if (!rerenderStave) {
+        if (rerenderStave == false) {
           setStaveMap([
-            { stave: stave, currX: 0, currY: 0, width: staveWidth },
+            {
+              stave: topStave,
+              isLeft: bottomStave,
+              currX: 20,
+              currY: 0,
+              width: staveWidth,
+            },
+            {
+              stave: bottomStave,
+              currX: 20,
+              currY: 150,
+              width: staveWidth,
+            },
           ]);
         }
       }
-
-      if (rerenderStave && staveMap.length > 1) {
+      console.log(staveMap.length);
+      console.log(staveMap);
+      if (rerenderStave && staveMap.length >= 1) {
+        console.log("rerender");
         let i = 1;
         for (i = 1; i < staveMap.length; i++) {
-          const stave = new Stave(
-            staveMap[i].currX,
-            staveMap[i].currY,
-            staveMap[i].width
-          );
-          stave.setContext(context).draw();
+          if (staveMap[i].isLeft) {
+            const brace = new StaveConnector(
+              staveMap[i].stave,
+              staveMap[i].isLeft
+            ).setType(3);
+            const lineLeft = new StaveConnector(
+              staveMap[i].stave,
+              staveMap[i].isLeft
+            ).setType(1);
+
+            lineLeft.setContext(context).draw();
+            brace.setContext(context).draw();
+          }
+          staveMap[i].stave.setContext(context).draw();
         }
         setRerenderStave(false);
       }
 
-      console.log(newStaves);
       newStaves.forEach((notes, i) => {
-        console.log("hello");
         const processedNotes = notes
           .map((note) => (typeof note === "string" ? { key: note } : note))
           .map((note) =>
-            Array.isArray(note) ? { key: note[0], duration: note[1] } : note
+            Array.isArray(note)
+              ? Array.isArray(note[0])
+                ? { keys: note[0], duration: note[1] }
+                : { key: note[0], duration: note[1] }
+              : note
           )
           .map(({ key, ...rest }) =>
             typeof key === "string"
@@ -91,7 +147,7 @@ export default function Score({
               : rest
           )
           .map(
-            ({ key, keys, duration = "q" }) =>
+            ({ key, keys, duration }) =>
               new StaveNote({
                 keys: key ? [key] : keys,
                 duration: String(duration),
@@ -102,31 +158,58 @@ export default function Score({
         });
       });
       if (newStave && (staveLength - 1) % 3 != 0) {
-        const newStave = new Stave(
+        const topStave = new Stave(
           currX,
           currY,
-          staveLength - 1 < 3 ? 210 : 230
+          staveLength - 1 < 3 ? 200 : 220
         );
-        setCurrX(currX + newStave.getWidth());
-        newStave.setContext(context).draw();
+        const bottomStave = new Stave(
+          currX,
+          currY + 150,
+          staveLength - 1 < 3 ? 200 : 220
+        );
+        setCurrX(currX + topStave.getWidth());
+        topStave.setContext(context).draw();
+        bottomStave.setContext(context).draw();
         setStaveMap([
           ...staveMap,
           {
-            stave: newStave,
+            stave: topStave,
             currX: currX,
             currY: currY,
-            width: staveLength - 1 < 3 ? 210 : 230,
+            width: staveLength - 1 < 3 ? 200 : 220,
+          },
+          {
+            stave: bottomStave,
+            currX: currX,
+            currY: currY + 150,
+            width: staveLength - 1 < 3 ? 200 : 220,
           },
         ]);
       } else if (newStave && (staveLength - 1) % 3 == 0) {
-        const context = renderer.getContext();
-        const newStave = new Stave(0, currY + 150, 230);
-        setCurrX(230);
-        setCurrY(currY + 150);
-        newStave.setContext(context).draw();
+        const topStave = new Stave(20, currY + 300, 220);
+        const bottomStave = new Stave(20, currY + 450, 220);
+        topStave.addClef("treble");
+        bottomStave.addClef("bass");
+        const brace = new StaveConnector(topStave, bottomStave).setType(3);
+        const lineLeft = new StaveConnector(topStave, bottomStave).setType(1);
+        setCurrX(240);
+        setCurrY(currY + 300);
+        setHeight(height + 150);
+        topStave.setContext(context).draw();
+        bottomStave.setContext(context).draw();
+        lineLeft.setContext(context).draw();
+        brace.setContext(context).draw();
         setStaveMap([
           ...staveMap,
-          { stave: newStave, currX: 0, currY: currY + 150, width: 230 },
+          {
+            stave: topStave,
+            isLeft: bottomStave,
+            currX: 20,
+            currY: currY + 300,
+            width: 220,
+          },
+          { stave: bottomStave, currX: 20, currY: currY + 450, width: 220 },
         ]);
       }
       setNewStave(false);
@@ -174,7 +257,6 @@ export default function Score({
     }
 
     let spaceIndex = undefined;
-    // Update display or perform any other actions based on lineHovered or spaceHovered
     if (lineHovered) {
       lineIndex = Math.round(lineIndex);
     } else if (spaceHovered) {
@@ -203,7 +285,6 @@ export default function Score({
         break;
       }
     }
-    console.log("spaceIndex", spaceIndex);
 
     if (event.type == "mousedown") {
       handleSetNewNote(lineIndex, spaceIndex, beatIndex, hoveredStaveIndex);
@@ -225,10 +306,17 @@ export default function Score({
 
     for (i = 0; i < timeSig[0]; i++) {
       if (i == beatIndex) {
-        if (!newStaveArray) {
-          newStaveArray.push(newNote);
+        if (!newStaveArray[i] || newStaveArray[i][1] == "qr") {
+          newStaveArray[i] = [newNote, "q"];
+        } else {
+          const newArray = Array.isArray(newStaveArray[i][0])
+            ? newStaveArray[i][0]
+            : [newStaveArray[i][0]];
+          console.log(newArray);
+          newArray.push(newNote);
+          newStaveArray[i][0] = newArray;
+          console.log(newStaveArray);
         }
-        newStaveArray[i] = newNote;
       } else if (!newStaveArray) {
         newStaveArray.push(["b/4", "qr"]);
       } else if (!newStaveArray[i]) {
@@ -238,7 +326,6 @@ export default function Score({
 
     setRerenderStave(true);
     if (newListArray.length == 0) {
-      console.log("hello");
       newListArray = [newStaveArray];
     } else {
       i = 0;
@@ -247,9 +334,29 @@ export default function Score({
       }
     }
 
-    console.log(newListArray);
     setNewStaves(newListArray);
   };
 
-  return <div ref={container} id="output" />;
+  return (
+    <div
+      onMouseMove={handleCursor}
+      onClick={handleMouseClick}
+      style={{ position: "relative" }}
+      ref={container}
+      id="output"
+    >
+      {showNote && (
+        <div
+          style={{
+            position: "absolute",
+            left: noteOffset.x - 18,
+            top: noteOffset.y + 10,
+            pointerEvents: "none", // Ensure the note doesn't interfere with mouse events
+          }}
+        >
+          <img src={Note} className="cursor-image" />
+        </div>
+      )}
+    </div>
+  );
 }

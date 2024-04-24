@@ -25,7 +25,7 @@ const EditScore = () => {
   const tabs = ["note", "articulation", "ornament", "dynamic", "bar", "text"];
   const [staveLength, setStaveLength] = useState(1);
   const [width, setWidth] = useState(810);
-  const [height, setHeight] = useState(150);
+  const [height, setHeight] = useState(300);
   const [timeSig, setTimeSig] = useState("4/4");
   const [confirmed, setConfirmed] = useState(false);
   const pageContainer = useRef(null);
@@ -252,6 +252,7 @@ const EditScore = () => {
             timeSig={timeSig}
             width={width}
             height={height}
+            setHeight={setHeight}
             confirmed={confirmed}
           />
           <div
